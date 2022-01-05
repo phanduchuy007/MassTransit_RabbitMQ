@@ -16,7 +16,7 @@ namespace StudentManage.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        IRequestClient<OperationModel> _client;
+        IRequestClient<ListOperationModel> _client;
 
         // private IStudentData _studentData;
         /*private IStudentRepository _repositoryStudent;
@@ -26,7 +26,7 @@ namespace StudentManage.Controllers
 
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public StudentController(IUnitOfWork unitOfWork, Service service, IPublishEndpoint publishEndpoint, IRequestClient<OperationModel> client)
+        public StudentController(IUnitOfWork unitOfWork, Service service, IPublishEndpoint publishEndpoint, IRequestClient<ListOperationModel> client)
         {
             _unitOfWork = unitOfWork;
             _service = service;
@@ -181,14 +181,14 @@ namespace StudentManage.Controllers
         [HttpGet]
         public async Task<IActionResult> FilterStudentByMark(double mark)
         {
-            var student = _service.FilterStudentByMark(mark).ToList();
+            var students = _service.FilterStudentByMark(mark).ToList();
 
-            if (student != null)
+            if (students != null)
             {
-                await _publishEndpoint.Publish<ListOperationModel>(new { operations = student });
-                var response = await _client.GetResponse<OperationModel>(new { Mark = mark });
-                    //.GetResponse<OperationModel>();
-                return Ok(student);
+                await _publishEndpoint.Publish<ListOperationModel>(new { operations = students });
+                var response = await _client.GetResponse<OperationModel>(new OperationModel());
+
+                return Ok(students);
             }
 
             return NotFound($"There are no students");

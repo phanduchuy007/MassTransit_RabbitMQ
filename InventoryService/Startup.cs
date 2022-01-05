@@ -49,7 +49,7 @@ namespace InventoryService
                     cfg.ReceiveEndpoint("student-queue", c => {
                         c.ConfigureConsumer<StudentConsumer>(ctx);
                     });
-                });               
+                });
             });
 
             services.AddMassTransitHostedService();

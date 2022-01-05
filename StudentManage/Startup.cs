@@ -70,7 +70,7 @@ namespace StudentManage
                         c.ConfigureConsumer<CourseRegistrationConsumer>(ctx);
                     });
                 });
-                config.AddRequestClient<OperationModel>();
+                config.AddRequestClient<ListOperationModel>();
             });
 
             services.AddMassTransitHostedService();
