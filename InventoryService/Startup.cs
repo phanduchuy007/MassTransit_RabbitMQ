@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Model;
 
 namespace InventoryService
 {
@@ -48,7 +49,7 @@ namespace InventoryService
                     cfg.ReceiveEndpoint("student-queue", c => {
                         c.ConfigureConsumer<StudentConsumer>(ctx);
                     });
-                });
+                });               
             });
 
             services.AddMassTransitHostedService();

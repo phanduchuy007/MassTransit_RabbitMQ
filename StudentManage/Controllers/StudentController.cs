@@ -16,6 +16,8 @@ namespace StudentManage.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        IRequestClient<OperationModel> _client;
+
         // private IStudentData _studentData;
         /*private IStudentRepository _repositoryStudent;
         private ISubjectsRepository _repositorySubjects;*/
@@ -24,11 +26,12 @@ namespace StudentManage.Controllers
 
         private readonly IPublishEndpoint _publishEndpoint;
 
-        public StudentController(IUnitOfWork unitOfWork, Service service, IPublishEndpoint publishEndpoint)
+        public StudentController(IUnitOfWork unitOfWork, Service service, IPublishEndpoint publishEndpoint, IRequestClient<OperationModel> client)
         {
             _unitOfWork = unitOfWork;
             _service = service;
             _publishEndpoint = publishEndpoint;
+            _client = client;
         }
 
         // get/student
@@ -176,13 +179,15 @@ namespace StudentManage.Controllers
         // [EnableCors("mypolicy")]
         [Route("api/filter-student-by-mark/{mark}")]
         [HttpGet]
-        public IActionResult FilterStudentByMark(double mark)
+        public async Task<IActionResult> FilterStudentByMark(double mark)
         {
             var student = _service.FilterStudentByMark(mark).ToList();
 
             if (student != null)
             {
-                _publishEndpoint.Publish<ListOperationModel>(new { operations = student });
+                await _publishEndpoint.Publish<ListOperationModel>(new { operations = student });
+                var response = await _client.GetResponse<OperationModel>(new { Mark = mark });
+                    //.GetResponse<OperationModel>();
                 return Ok(student);
             }
 

@@ -44,14 +44,14 @@ namespace OrderService.Controllers
             return Ok();
         }
 
-        [Route("test")]
+      /*  [Route("test")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] OperationModel operation)
         {
             await _publishEndpoint.Publish<OperationModel>(operation);
 
             return Ok();
-        }
+        }*/
 
         // PUT api/<OrderController>/5
         [HttpPut("{id}")]

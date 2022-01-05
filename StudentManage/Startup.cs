@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Model;
 using StudentManage.Dal.Repository.Interface;
 using StudentManage.Dal.Repository.StudentRepository;
 using StudentManage.Dal.Repository.SubjectjRepository;
@@ -69,6 +70,7 @@ namespace StudentManage
                         c.ConfigureConsumer<CourseRegistrationConsumer>(ctx);
                     });
                 });
+                config.AddRequestClient<OperationModel>();
             });
 
             services.AddMassTransitHostedService();
