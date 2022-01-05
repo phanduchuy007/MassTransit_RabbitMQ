@@ -31,12 +31,22 @@ namespace InventoryService
             services.AddMassTransit(config => {
 
                 config.AddConsumer<OrderConsumer>();
+                config.AddConsumer<StudentConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     //cfg.Host("amqp://guest:guest@localhost:5672");
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
 
                     cfg.ReceiveEndpoint("order-queue", c => {
                         c.ConfigureConsumer<OrderConsumer>(ctx);
+                    });
+
+                    cfg.ReceiveEndpoint("student-queue", c => {
+                        c.ConfigureConsumer<StudentConsumer>(ctx);
                     });
                 });
             });

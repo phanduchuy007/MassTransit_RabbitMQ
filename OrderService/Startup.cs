@@ -30,10 +30,14 @@ namespace OrderService
             services.AddControllers();
 
             services.AddMassTransit(config => {
-                /*config.UsingRabbitMq((ctx, cfg) => {
-                    cfg.Host("amqp://guest:guest@localhost:5672");
-                });*/
-                config.UsingRabbitMq();
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                });
             });
 
             services.AddMassTransitHostedService();

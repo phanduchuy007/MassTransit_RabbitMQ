@@ -37,18 +37,18 @@ namespace OrderService.Controllers
 
         // POST api/<OrderController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Order order)
+        public async Task<IActionResult> Post([FromBody] OrderModel order)
         {
-            await _publishEndpoint.Publish<Order>(order);
+            await _publishEndpoint.Publish<OrderModel>(order);
 
             return Ok();
         }
 
         [Route("test")]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Operation operation)
+        public async Task<IActionResult> Post([FromBody] OperationModel operation)
         {
-            await _publishEndpoint.Publish<Operation>(operation);
+            await _publishEndpoint.Publish<OperationModel>(operation);
 
             return Ok();
         }

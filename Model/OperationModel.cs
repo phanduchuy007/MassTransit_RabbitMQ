@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model
 {
-    public class Operation
+    public class OperationModel
     {
         public string Name { get; set; }
         public string Address { get; set; }
@@ -12,6 +12,6 @@ namespace Model
         public string Subject { get; set; }
         public string Teacher { get; set; }
         public string Classroom { get; set; }
-        public double? Mark { get; set; }
+        public double Mark { get; set; }
     }
 }

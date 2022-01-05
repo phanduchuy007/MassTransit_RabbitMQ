@@ -58,6 +58,12 @@ namespace StudentManage
 
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+
                     cfg.ReceiveEndpoint("student-subject-queue", c =>
                     {
                         c.ConfigureConsumer<CourseRegistrationConsumer>(ctx);

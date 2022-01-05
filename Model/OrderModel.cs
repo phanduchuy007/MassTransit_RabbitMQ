@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    public class Order
+    public class OrderModel
     {
         public string Name { get; set; }
     }

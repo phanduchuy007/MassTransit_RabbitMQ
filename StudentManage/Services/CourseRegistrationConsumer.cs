@@ -8,7 +8,7 @@ using Model;
 
 namespace StudentManage.Services
 {
-    public class CourseRegistrationConsumer : IConsumer<Operation>
+    public class CourseRegistrationConsumer : IConsumer<OperationModel>
     {
         Service _services;
         private readonly ILogger<CourseRegistrationConsumer> _logger;
@@ -19,7 +19,7 @@ namespace StudentManage.Services
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<Operation> context)
+        public async Task Consume(ConsumeContext<OperationModel> context)
         {
             /*_logger.LogInformation("Value: {Value}", context.Message);
             _services.AddDataTable((Operation)context.Message);*/

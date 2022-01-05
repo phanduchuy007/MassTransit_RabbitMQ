@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentManage.Dal.Repository.Interface;
 using StudentManage.Models;
 using StudentManage.Services;
+using Model;
 
 namespace StudentManage.Controllers
 {
@@ -20,10 +22,13 @@ namespace StudentManage.Controllers
         private IUnitOfWork _unitOfWork;
         private Service _service;
 
-        public StudentController(IUnitOfWork unitOfWork, Service service)
+        private readonly IPublishEndpoint _publishEndpoint;
+
+        public StudentController(IUnitOfWork unitOfWork, Service service, IPublishEndpoint publishEndpoint)
         {
             _unitOfWork = unitOfWork;
             _service = service;
+            _publishEndpoint = publishEndpoint;
         }
 
         // get/student
@@ -168,14 +173,18 @@ namespace StudentManage.Controllers
             return NotFound($"Student with Id:{id} was not found");
         }
 
-        [EnableCors("mypolicy")]
+        // [EnableCors("mypolicy")]
         [Route("api/filter-student-by-mark/{mark}")]
         [HttpGet]
         public IActionResult FilterStudentByMark(double mark)
         {
-            var student = _service.FilterStudentByMark(mark);
+            var student = _service.FilterStudentByMark(mark).ToList();
 
-            if (student != null) return Ok(student);
+            if (student != null)
+            {
+                _publishEndpoint.Publish<ListOperationModel>(new { operations = student });
+                return Ok(student);
+            }
 
             return NotFound($"There are no students");
         }
