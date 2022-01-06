@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Model;
+using RabbitMQ.Client;
 
 namespace InventoryService
 {
@@ -32,7 +33,7 @@ namespace InventoryService
             services.AddMassTransit(config => {
 
                 config.AddConsumer<OrderConsumer>();
-                config.AddConsumer<StudentConsumer>();
+                // config.AddConsumer<StudentConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     //cfg.Host("amqp://guest:guest@localhost:5672");
@@ -47,7 +48,16 @@ namespace InventoryService
                     });
 
                     cfg.ReceiveEndpoint("student-queue", c => {
-                        c.ConfigureConsumer<StudentConsumer>(ctx);
+
+                        // turns off default fanout settings
+                        c.ConfigureConsumeTopology = false;
+
+                        c.Consumer<StudentConsumer>();
+                        c.Bind("list-report-requests", e =>
+                        {
+                            e.RoutingKey = "list";
+                            e.ExchangeType = ExchangeType.Direct;
+                        });
                     });
                 });
             });

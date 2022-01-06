@@ -185,8 +185,9 @@ namespace StudentManage.Controllers
 
             if (students != null)
             {
-                await _publishEndpoint.Publish<ListOperationModel>(new { operations = students });
-                var response = await _client.GetResponse<OperationModel>(new OperationModel());
+                await _publishEndpoint.Publish<ListOperationModel>(new { operations = students, Provider = "list" });
+
+                var response = await _client.GetResponse<OperationModel>(new { Provider = "list"});
 
                 return Ok(students);
             }

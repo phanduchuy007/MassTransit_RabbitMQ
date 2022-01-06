@@ -6,6 +6,7 @@ namespace Model
 {
     public class ListOperationModel
     {
+        public string Provider { get; set; }
         public List<OperationModel> operations { get; set; }
     }
 }

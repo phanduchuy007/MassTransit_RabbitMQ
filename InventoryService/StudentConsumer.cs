@@ -11,9 +11,10 @@ namespace InventoryService
     {
         public async Task Consume(ConsumeContext<ListOperationModel> context)
         {
-            if (context != null)
+            var list = context?.Message?.operations.ToList();
+
+            if (list.Count > 0)
             {
-                /*var list = context.Message.operations;
                 var operation = new OperationModel()
                 {
                     Name = list[0].Name,
@@ -37,26 +38,33 @@ namespace InventoryService
                         operation.Classroom = item.Classroom;
                         operation.Mark = item.Mark;
                     }
-                }*/
-                await context.RespondAsync<OperationModel>(new OperationModel
+                }
+                if (operation != null)
                 {
-                    /*Name = operation.Name,
-                    Address = operation.Address,
-                    Email = operation.Email,
-                    Subject = operation.Subject,
-                    Teacher = operation.Teacher,
-                    Classroom = operation.Classroom,
-                    Mark = operation.Mark*/
-                    Name = "Huy",
-                    Address = "Binh Dinh",
-                    Email = "huy@gmail.com",
-                    Subject = "Tin",
-                    Teacher = "Long",
-                    Classroom = "A101",
-                    Mark = 9
-                });
+                }
             }
+
+            await context.RespondAsync<OperationModel>(new
+            {
+                Name = "operation.Name",
+                Address = "operation.Address",
+                Email = "operation.Email",
+                Subject = "operation.Subject",
+                Teacher = "operation.Teacher",
+                Classroom = "operation.Classroom",
+                Mark = "operation.Mark"
+            }); ;
             /*return Task.CompletedTask;*/
         }
     }
 }
+/*await context.RespondAsync<OperationModel>(new
+{
+    operation.Name,
+    operation.Address,
+    operation.Email,
+    operation.Subject,
+    operation.Teacher,
+    operation.Classroom,
+    operation.Mark
+});*/

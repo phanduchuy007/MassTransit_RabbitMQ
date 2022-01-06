@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Model;
+using RabbitMQ.Client;
 using StudentManage.Dal.Repository.Interface;
 using StudentManage.Dal.Repository.StudentRepository;
 using StudentManage.Dal.Repository.SubjectjRepository;
@@ -63,6 +64,13 @@ namespace StudentManage
                     {
                         h.Username("guest");
                         h.Password("guest");
+                    });
+
+                    cfg.Message<ListOperationModel>(e => e.SetEntityName("list-report-requests")); // name of the primary exchange
+                    cfg.Publish<ListOperationModel>(e => e.ExchangeType = ExchangeType.Direct); // primary exchange type
+                    cfg.Send<ListOperationModel>(e =>
+                    {
+                        e.UseRoutingKeyFormatter(ctx => ctx.Message.Provider.ToString()) ; // route by provider (email or fax)
                     });
 
                     cfg.ReceiveEndpoint("student-subject-queue", c =>
