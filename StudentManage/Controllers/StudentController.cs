@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model;
 using StudentManage.Dal.Repository.Interface;
 using StudentManage.Models;
 using StudentManage.Services;
-using Model;
 
 namespace StudentManage.Controllers
 {
@@ -185,11 +182,11 @@ namespace StudentManage.Controllers
 
             if (students != null)
             {
-                await _publishEndpoint.Publish<ListOperationModel>(new { operations = students, Provider = "list" });
+               // await _publishEndpoint.Publish<ListOperationModel>(new { operations = students, Provider = "list" });
 
-                var response = await _client.GetResponse<OperationModel>(new { Provider = "list"});
+                var response = await _client.GetResponse<OperationModel>(new  { Provider = "list" }); //object này anonymus classs. qua bển consumer nó sẽ dc cast thành  ListOperationModel
 
-                return Ok(students);
+                //return Ok();
             }
 
             return NotFound($"There are no students");

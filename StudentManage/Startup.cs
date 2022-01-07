@@ -56,7 +56,7 @@ namespace StudentManage
             // MassTransit
             services.AddMassTransit(config =>
             {
-                config.AddConsumer<CourseRegistrationConsumer>();
+                //config.AddConsumer<CourseRegistrationConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
@@ -70,13 +70,13 @@ namespace StudentManage
                     cfg.Publish<ListOperationModel>(e => e.ExchangeType = ExchangeType.Direct); // primary exchange type
                     cfg.Send<ListOperationModel>(e =>
                     {
-                        e.UseRoutingKeyFormatter(ctx => ctx.Message.Provider.ToString()) ; // route by provider (email or fax)
+                        e.UseRoutingKeyFormatter(ctx => ctx.Message.Provider.ToString());
                     });
 
-                    cfg.ReceiveEndpoint("student-subject-queue", c =>
+                   /* cfg.ReceiveEndpoint("student-subject-queue", c =>
                     {
                         c.ConfigureConsumer<CourseRegistrationConsumer>(ctx);
-                    });
+                    });*/
                 });
                 config.AddRequestClient<ListOperationModel>();
             });

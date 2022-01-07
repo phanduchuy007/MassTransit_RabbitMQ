@@ -48,7 +48,6 @@ namespace InventoryService
                     });
 
                     cfg.ReceiveEndpoint("student-queue", c => {
-
                         // turns off default fanout settings
                         c.ConfigureConsumeTopology = false;
 
